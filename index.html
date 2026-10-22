@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta name="referrer" content="no-referrer">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#111311">
+<title>Formulario de Siniestros</title>
+<link rel="icon" type="image/jpeg" href="assets/logo.jpg">
+<link rel="apple-touch-icon" href="assets/logo.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Public+Sans:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="brand">
+      <img id="logoTop" alt="" hidden>
+      <div style="min-width:0">
+        <h1>Formulario de Accidentes</h1>
+        <p>Anexo Gestión de Daños · AN1-IN14-PN-ECON</p>
+      </div>
+    </div>
+    <div class="steps" id="steps" aria-label="Pasos"></div>
+    <div class="steplabel"><span id="stepName"></span><span id="stepCount"></span></div>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+<form id="f" autocomplete="on" novalidate>
+
+<!-- 1 -->
+<section class="step" data-title="Tus datos">
+  <div class="note"><b>Importante:</b> este formulario lo completa el conductor del vehículo siniestrado y se presenta al Sector de Seguros el primer día hábil posterior al hecho. En caso de imposibilidad física, lo completa el superior.</div>
+  <div class="card">
+    <div class="bar">Datos propios</div>
+    <div class="fields">
+      <label class="f"><span>Patente <span class="req">*</span></span><input type="text" maxlength="120" id="p_patente" data-f autocapitalize="characters" placeholder="AB 123 CD"></label>
+      <label class="f"><span>Modelo <span class="req">*</span></span><input type="text" maxlength="120" id="p_modelo" data-f placeholder="Marca y modelo"></label>
+    </div>
+    <div class="sub">Conductor</div>
+    <div class="fields">
+      <label class="f full"><span>Nombre y apellido <span class="req">*</span></span><input type="text" maxlength="120" id="c_nombre" data-f autocomplete="name"></label>
+      <label class="f">DNI<input type="tel" maxlength="10" id="c_dni" data-f data-digits inputmode="numeric" pattern="[0-9]*" inputmode="numeric"></label>
+      <label class="f">Legajo<input type="tel" maxlength="10" id="c_legajo" data-f data-digits inputmode="numeric" pattern="[0-9]*"></label>
+      <label class="f full">Domicilio<input type="text" maxlength="120" id="c_domicilio" data-f autocomplete="street-address"></label>
+    </div>
+  </div>
+  <button type="button" class="linkbtn" id="loadSample" hidden>Cargar datos de ejemplo para probar</button>
+</section>
+
+<!-- 2 -->
+<section class="step" data-title="El tercero" hidden>
+  <div class="card">
+    <div class="bar">Datos del tercero</div>
+    <div class="sub">Conductor</div>
+    <div class="fields">
+      <label class="f full">Nombre y apellido<input type="text" maxlength="120" id="t_nombre" data-f></label>
+      <label class="f">DNI<input type="tel" maxlength="10" id="t_dni" data-f data-digits inputmode="numeric" pattern="[0-9]*" inputmode="numeric"></label>
+      <label class="f">Teléfono<input type="tel" maxlength="10" id="t_telefono" data-f data-digits inputmode="numeric" pattern="[0-9]*"></label>
+      <label class="f full">Domicilio<input type="text" maxlength="120" id="t_domicilio" data-f></label>
+      <label class="f">Compañía de seguro<input type="text" maxlength="120" id="t_cia" data-f></label>
+      <label class="f">Nº de póliza<input type="text" maxlength="120" id="t_poliza" data-f></label>
+    </div>
+    <div class="sub">Propietario</div>
+    <div class="fields">
+      <label class="check full"><input type="checkbox" id="t_mismo" data-f> El propietario es el mismo conductor</label>
+      <label class="f full">Nombre y apellido<input type="text" maxlength="120" id="pr_nombre" data-f></label>
+      <label class="f">DNI / CUIT<input type="tel" maxlength="11" id="pr_dni" data-f data-digits inputmode="numeric" pattern="[0-9]*"></label>
+      <label class="f">Teléfono<input type="tel" maxlength="10" id="pr_telefono" data-f data-digits inputmode="numeric" pattern="[0-9]*"></label>
+      <label class="f full">Domicilio<input type="text" maxlength="120" id="pr_domicilio" data-f></label>
+    </div>
+    <div class="sub">Vehículo</div>
+    <div class="fields">
+      <label class="f"><span>Patente <span class="req">*</span></span><input type="text" maxlength="120" id="tv_patente" data-f autocapitalize="characters"></label>
+      <label class="f"><span>Modelo <span class="req">*</span></span><input type="text" maxlength="120" id="tv_modelo" data-f></label>
+    </div>
+  </div>
+</section>
+
+<!-- 3 -->
+<section class="step" data-title="El siniestro" hidden>
+  <div class="card">
+    <div class="bar">Datos del siniestro</div>
+    <div class="fields">
+      <label class="f"><span>Fecha <span class="req">*</span></span><input type="date" id="s_fecha" data-f></label>
+      <label class="f"><span>Hora <span class="req">*</span></span><input type="time" id="s_hora" data-f></label>
+      <label class="f full"><span>Dirección del siniestro <span class="req">*</span></span><input type="text" maxlength="120" id="s_direccion" data-f placeholder="Calle, altura o esquina, localidad"></label>
+      <div class="yn full"><span class="q">¿Iba acompañado?</span>
+        <div class="seg"><input type="radio" name="s_acomp" id="s_acomp_si" value="SI"><label for="s_acomp_si">Sí</label><input type="radio" name="s_acomp" id="s_acomp_no" value="NO"><label for="s_acomp_no">No</label></div>
+        <label class="f" data-show="s_acomp">Nombre y apellido del acompañante<input type="text" maxlength="120" id="s_acomp_nombre" data-f></label>
+      </div>
+      <div class="yn full"><span class="q">¿Había semáforo?</span>
+        <div class="seg"><input type="radio" name="s_semaforo" id="s_semaforo_si" value="SI"><label for="s_semaforo_si">Sí</label><input type="radio" name="s_semaforo" id="s_semaforo_no" value="NO"><label for="s_semaforo_no">No</label></div>
+        <label class="f" data-show="s_semaforo">Color al momento del hecho<select id="s_semaforo_color" data-f><option value="">Elegir…</option><option>Verde</option><option>Amarillo</option><option>Rojo</option><option>Intermitente</option><option>Apagado</option></select></label>
+      </div>
+      <div class="yn full"><span class="q">¿Había señales viales?</span>
+        <div class="seg"><input type="radio" name="s_senales" id="s_senales_si" value="SI"><label for="s_senales_si">Sí</label><input type="radio" name="s_senales" id="s_senales_no" value="NO"><label for="s_senales_no">No</label></div>
+        <label class="f" data-show="s_senales">Indique cuál<input type="text" maxlength="120" id="s_senales_cual" data-f placeholder="Pare, ceda el paso, contramano…"></label>
+      </div>
+      <label class="f">Estado del tiempo<select id="s_tiempo" data-f><option value="">Elegir…</option><option>Bueno</option><option>Nublado</option><option>Lluvia</option><option>Llovizna</option><option>Niebla</option><option>Granizo</option><option>Nieve</option><option>Viento fuerte</option></select></label>
+      <label class="f">Tipo de calzada<select id="s_calzada" data-f><option value="">Elegir…</option><option>Asfalto</option><option>Hormigón</option><option>Adoquín</option><option>Ripio</option><option>Tierra</option><option>Mejorado</option></select></label>
+      <label class="f">Km/h al momento del accidente<input type="number" id="s_kmh" step="1" data-f inputmode="numeric" min="0" max="250"></label>
+    </div>
+    <div class="sub">Testigos</div>
+    <div class="fields">
+      <label class="f">Testigo 1 · Nombre y apellido<input type="text" maxlength="120" id="w1_nombre" data-f></label>
+      <label class="f">Teléfono<input type="tel" maxlength="10" id="w1_tel" data-f data-digits inputmode="numeric" pattern="[0-9]*"></label>
+      <label class="f">Testigo 2 · Nombre y apellido<input type="text" maxlength="120" id="w2_nombre" data-f></label>
+      <label class="f">Teléfono<input type="tel" maxlength="10" id="w2_tel" data-f data-digits inputmode="numeric" pattern="[0-9]*"></label>
+    </div>
+  </div>
+</section>
+
+<!-- 4 -->
+<section class="step" data-title="Croquis" hidden>
+  <div class="card">
+    <div class="bar">Gráfico del siniestro</div>
+    <div class="sk-body">
+      <div class="seg" role="radiogroup" aria-label="Fondo del croquis" style="align-self:stretch;display:flex">
+        <input type="radio" name="sk_bg" id="bg_cruce" value="cruce" checked><label for="bg_cruce" style="flex:1">Cruce de calles</label>
+        <input type="radio" name="sk_bg" id="bg_img" value="imagen"><label for="bg_img" style="flex:1">Subir imagen</label>
+        <input type="radio" name="sk_bg" id="bg_blank" value="blanco"><label for="bg_blank" style="flex:1">En blanco</label>
+      </div>
+      <input type="file" id="sk_file" accept="image/*" hidden>
+      <div class="fields" id="streetFields" style="padding:0">
+        <label class="f">Calle Este–Oeste (horizontal)<input type="text" maxlength="120" id="sk_calle_h" placeholder="Ej: Av. San Martín"></label>
+        <label class="f">Calle Norte–Sur (vertical)<input type="text" maxlength="120" id="sk_calle_v" placeholder="Ej: Belgrano"></label>
+      </div>
+      <div class="row" id="imgRow" hidden><button type="button" class="btn small" id="sk_pick">Elegir otra imagen</button><span class="hint">Podés dibujar y poner autos encima de la imagen.</span></div>
+
+      <div class="palette" id="palette"></div>
+
+      <div class="canvas-box" id="skBox"><canvas id="sk" width="900" height="900" aria-label="Croquis del siniestro"></canvas></div>
+
+      <div class="selbar" id="selbar"></div>
+
+      <div class="toolrow">
+        <button type="button" class="btn small on" id="tool_move">✋ Mover</button>
+        <button type="button" class="btn small" id="tool_pen">✏️ Dibujar</button>
+        <span id="penColors" class="row" style="gap:6px"></span>
+        <button type="button" class="btn small" id="sk_undo">Deshacer trazo</button>
+        <button type="button" class="btn small danger" id="sk_clear">Borrar todo</button>
+      </div>
+      <div class="row">
+        <input type="text" maxlength="120" id="sk_text" placeholder="Referencia: kiosco, parada de colectivo…" style="flex:1;min-width:0">
+        <button type="button" class="btn small" id="sk_addtext">Agregar texto</button>
+      </div>
+      <p class="hint">Tocá un elemento de la paleta para agregarlo, arrastralo a su lugar y giralo con el círculo verde. Con “Dibujar” podés marcar trayectorias a mano alzada.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 5 -->
+<section class="step" data-title="Descripción" hidden>
+  <div class="card">
+    <div class="bar">Descripción del siniestro</div>
+    <div class="fields">
+      <label class="f full">Contá con tus palabras cómo ocurrió el hecho<textarea id="descripcion" data-f maxlength="4000" placeholder="Por dónde circulabas, hacia dónde, qué hizo el otro vehículo, dónde fue el impacto, qué daños hubo…"></textarea></label>
+      <p class="hint full" id="descCount"></p>
+    </div>
+  </div>
+</section>
+
+<!-- 6 -->
+<section class="step" data-title="Lesiones" hidden>
+  <div class="card">
+    <div class="bar">Lesiones a terceros</div>
+    <div class="fields">
+      <div class="yn full"><span class="q">¿Hubo personas lesionadas?</span>
+        <div class="seg"><input type="radio" name="les_hay" id="les_si" value="SI"><label for="les_si">Sí</label><input type="radio" name="les_hay" id="les_no" value="NO" checked><label for="les_no">No</label></div>
+      </div>
+    </div>
+    <div id="lesList"></div>
+    <div class="fields" id="lesAddRow" hidden><button type="button" class="btn full" id="lesAdd">+ Agregar otra persona lesionada</button></div>
+  </div>
+</section>
+
+<!-- 7 -->
+<section class="step" data-title="Adjuntos y firma" hidden>
+  <div class="card">
+    <div class="bar">Documentación a adjuntar</div>
+    <div class="fields">
+      <p class="hint full">Sacá una foto o elegí una imagen. Se agregan al final del PDF.</p>
+      <div class="full" style="display:flex;flex-direction:column;gap:8px">
+        <b style="font-size:.9rem">Carnet de conducir (frente y dorso)</b>
+        <div class="thumbs" id="th_carnet"></div>
+        <label class="btn small" style="align-self:flex-start">📷 Agregar foto<input type="file" accept="image/*" multiple hidden data-att="carnet"></label>
+      </div>
+      <div class="full" style="display:flex;flex-direction:column;gap:8px">
+        <b style="font-size:.9rem">Tarjeta verde del vehículo</b>
+        <div class="thumbs" id="th_tarjeta"></div>
+        <label class="btn small" style="align-self:flex-start">📷 Agregar foto<input type="file" accept="image/*" multiple hidden data-att="tarjeta"></label>
+      </div>
+      <div class="full" style="display:flex;flex-direction:column;gap:8px">
+        <b style="font-size:.9rem">Otras fotos (daños, lugar del hecho)</b>
+        <div class="thumbs" id="th_otras"></div>
+        <label class="btn small" style="align-self:flex-start">📷 Agregar foto<input type="file" accept="image/*" multiple hidden data-att="otras"></label>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="bar">Firma y aclaración</div>
+    <div class="fields">
+      <div class="full sigbox"><canvas id="sig" width="900" height="300" aria-label="Firma"></canvas></div>
+      <div class="row full"><button type="button" class="btn small" id="sigClear">Borrar firma</button><span class="hint">Firmá con el dedo dentro del recuadro.</span></div>
+      <label class="f full">Aclaración<input type="text" maxlength="120" id="aclaracion" data-f placeholder="Se completa con tu nombre"></label>
+    </div>
+  </div>
+</section>
+
+<!-- 8 -->
+<section class="step" data-title="Generar PDF" hidden>
+  <div class="card">
+    <div class="bar">Revisión</div>
+    <div class="fields"><div class="full" id="review"></div></div>
+  </div>
+  <div class="card">
+    <div class="bar">Descargar y enviar</div>
+    <div class="actions">
+      <button type="button" class="btn primary" id="btnDownload">⬇ Descargar PDF</button>
+      <button type="button" class="btn" id="btnShare">Compartir PDF (WhatsApp, mail…)</button>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <label class="f">Enviar por email a<input type="email" maxlength="120" id="mailTo" data-f placeholder="seguros@empresa.com"></label>
+        <button type="button" class="btn" id="btnMail">✉ Abrir email con el resumen</button>
+        <p class="hint">El email se abre con el resumen escrito. Adjuntá el PDF que descargaste antes de enviarlo.</p>
+      </div>
+      <p class="status" id="status" role="status"></p>
+      <button type="button" class="btn ghost danger small" id="btnReset">Borrar todos los datos cargados</button>
+      <p class="hint">Por seguridad, nada de lo que cargás se guarda ni se envía a ningún servidor: todo queda en este celular hasta que cerrás la página.</p>
+    </div>
+  </div>
+</section>
+
+</form>
+</div>
+</main>
+
+<nav class="bottom"><div class="wrap">
+  <button type="button" class="btn" id="prev">← Anterior</button>
+  <button type="button" class="btn primary" id="next">Siguiente →</button>
+</div></nav>
+
+
+<script src="vendor/jspdf.umd.min.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
