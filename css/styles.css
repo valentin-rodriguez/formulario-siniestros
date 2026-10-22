@@ -1,3 +1,5 @@
+@font-face{font-family:"Archivo";font-style:normal;font-weight:500 800;font-display:swap;src:url(../fonts/archivo-latin.woff2) format("woff2")}
+@font-face{font-family:"Public Sans";font-style:normal;font-weight:400 600;font-display:swap;src:url(../fonts/public-sans-latin.woff2) format("woff2")}
 /* Layout: una columna tipo formulario en papel, pasos con barra negra como el Word y navegación fija abajo */
 :root{
   --bg:#f4f5f1; --paper:#ffffff; --ink:#151714; --muted:#5d6459; --line:#d5d9cf;
@@ -100,3 +102,20 @@ nav.bottom .btn{flex:1}
 .actions .btn{width:100%}
 @media (prefers-reduced-motion:no-preference){.btn,.steps button{transition:background-color .15s,opacity .15s}}
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom,0px));z-index:20;max-width:min(92vw,520px);background:var(--ink);color:var(--paper);padding:10px 14px;border-radius:8px;font-size:.9rem;box-shadow:0 4px 18px rgba(0,0,0,.25)}
+
+/* utilidades (reemplazan estilos en línea, para poder quitar 'unsafe-inline' de la CSP) */
+body .u1.u1{min-width:0}
+body .u2.u2{align-self:stretch;display:flex}
+body .u3.u3{flex:1}
+body .u4.u4{padding:0}
+body .u5.u5{gap:6px}
+body .u6.u6{flex:1;min-width:0}
+body .u7.u7{display:flex;flex-direction:column;gap:8px}
+body .u8.u8{font-size:.9rem}
+body .u9.u9{align-self:flex-start}
+body .u10.u10{display:flex;flex-direction:column;gap:6px}
+body .u11.u11{min-height:96px}
+body .u12.u12{font-weight:500}
+body .u13.u13{margin:0 0 6px;font-weight:600}
+body .u14.u14{margin-top:8px}
+body .u15.u15{margin:0}

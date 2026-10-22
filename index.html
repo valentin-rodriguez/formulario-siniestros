@@ -3,16 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#111311">
 <title>Formulario de Siniestros</title>
+<script src="js/framebuster.js"></script>
 <link rel="icon" type="image/jpeg" href="assets/logo.jpg">
 <link rel="apple-touch-icon" href="assets/logo.jpg">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Public+Sans:wght@400;500;600&display=swap">
+<link rel="preload" href="fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/public-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
@@ -20,7 +20,7 @@
   <div class="wrap">
     <div class="brand">
       <img id="logoTop" alt="" hidden>
-      <div style="min-width:0">
+      <div class="u1">
         <h1>Formulario de Accidentes</h1>
         <p>Anexo Gestión de Daños · AN1-IN14-PN-ECON</p>
       </div>
@@ -122,13 +122,13 @@
   <div class="card">
     <div class="bar">Gráfico del siniestro</div>
     <div class="sk-body">
-      <div class="seg" role="radiogroup" aria-label="Fondo del croquis" style="align-self:stretch;display:flex">
-        <input type="radio" name="sk_bg" id="bg_cruce" value="cruce" checked><label for="bg_cruce" style="flex:1">Cruce de calles</label>
-        <input type="radio" name="sk_bg" id="bg_img" value="imagen"><label for="bg_img" style="flex:1">Subir imagen</label>
-        <input type="radio" name="sk_bg" id="bg_blank" value="blanco"><label for="bg_blank" style="flex:1">En blanco</label>
+      <div class="seg u2" role="radiogroup" aria-label="Fondo del croquis">
+        <input type="radio" name="sk_bg" id="bg_cruce" value="cruce" checked><label class="u3" for="bg_cruce">Cruce de calles</label>
+        <input type="radio" name="sk_bg" id="bg_img" value="imagen"><label class="u3" for="bg_img">Subir imagen</label>
+        <input type="radio" name="sk_bg" id="bg_blank" value="blanco"><label class="u3" for="bg_blank">En blanco</label>
       </div>
       <input type="file" id="sk_file" accept="image/*" hidden>
-      <div class="fields" id="streetFields" style="padding:0">
+      <div class="fields u4" id="streetFields">
         <label class="f">Calle Este–Oeste (horizontal)<input type="text" maxlength="120" id="sk_calle_h" placeholder="Ej: Av. San Martín"></label>
         <label class="f">Calle Norte–Sur (vertical)<input type="text" maxlength="120" id="sk_calle_v" placeholder="Ej: Belgrano"></label>
       </div>
@@ -143,12 +143,12 @@
       <div class="toolrow">
         <button type="button" class="btn small on" id="tool_move">✋ Mover</button>
         <button type="button" class="btn small" id="tool_pen">✏️ Dibujar</button>
-        <span id="penColors" class="row" style="gap:6px"></span>
+        <span id="penColors" class="row u5"></span>
         <button type="button" class="btn small" id="sk_undo">Deshacer trazo</button>
         <button type="button" class="btn small danger" id="sk_clear">Borrar todo</button>
       </div>
       <div class="row">
-        <input type="text" maxlength="120" id="sk_text" placeholder="Referencia: kiosco, parada de colectivo…" style="flex:1;min-width:0">
+        <input class="u6" type="text" maxlength="120" id="sk_text" placeholder="Referencia: kiosco, parada de colectivo…">
         <button type="button" class="btn small" id="sk_addtext">Agregar texto</button>
       </div>
       <p class="hint">Tocá un elemento de la paleta para agregarlo, arrastralo a su lugar y giralo con el círculo verde. Con “Dibujar” podés marcar trayectorias a mano alzada.</p>
@@ -187,20 +187,20 @@
     <div class="bar">Documentación a adjuntar</div>
     <div class="fields">
       <p class="hint full">Sacá una foto o elegí una imagen. Se agregan al final del PDF.</p>
-      <div class="full" style="display:flex;flex-direction:column;gap:8px">
-        <b style="font-size:.9rem">Carnet de conducir (frente y dorso)</b>
+      <div class="full u7">
+        <b class="u8">Carnet de conducir (frente y dorso)</b>
         <div class="thumbs" id="th_carnet"></div>
-        <label class="btn small" style="align-self:flex-start">📷 Agregar foto<input type="file" accept="image/*" multiple hidden data-att="carnet"></label>
+        <label class="btn small u9">📷 Agregar foto<input type="file" accept="image/*" multiple hidden data-att="carnet"></label>
       </div>
-      <div class="full" style="display:flex;flex-direction:column;gap:8px">
-        <b style="font-size:.9rem">Tarjeta verde del vehículo</b>
+      <div class="full u7">
+        <b class="u8">Tarjeta verde del vehículo</b>
         <div class="thumbs" id="th_tarjeta"></div>
-        <label class="btn small" style="align-self:flex-start">📷 Agregar foto<input type="file" accept="image/*" multiple hidden data-att="tarjeta"></label>
+        <label class="btn small u9">📷 Agregar foto<input type="file" accept="image/*" multiple hidden data-att="tarjeta"></label>
       </div>
-      <div class="full" style="display:flex;flex-direction:column;gap:8px">
-        <b style="font-size:.9rem">Otras fotos (daños, lugar del hecho)</b>
+      <div class="full u7">
+        <b class="u8">Otras fotos (daños, lugar del hecho)</b>
         <div class="thumbs" id="th_otras"></div>
-        <label class="btn small" style="align-self:flex-start">📷 Agregar foto<input type="file" accept="image/*" multiple hidden data-att="otras"></label>
+        <label class="btn small u9">📷 Agregar foto<input type="file" accept="image/*" multiple hidden data-att="otras"></label>
       </div>
     </div>
   </div>
@@ -225,7 +225,7 @@
     <div class="actions">
       <button type="button" class="btn primary" id="btnDownload">⬇ Descargar PDF</button>
       <button type="button" class="btn" id="btnShare">Compartir PDF (WhatsApp, mail…)</button>
-      <div style="display:flex;flex-direction:column;gap:6px">
+      <div class="u10">
         <label class="f">Enviar por email a<input type="email" maxlength="120" id="mailTo" data-f placeholder="seguros@empresa.com"></label>
         <button type="button" class="btn" id="btnMail">✉ Abrir email con el resumen</button>
         <p class="hint">El email se abre con el resumen escrito. Adjuntá el PDF que descargaste antes de enviarlo.</p>

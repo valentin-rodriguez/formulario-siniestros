@@ -11,7 +11,10 @@ Es un sitio 100 % estático: no usa base de datos, servidor ni cookies. Los dato
 index.html                 Página (marcado del formulario)
 css/styles.css             Estilos, mobile-first, modo claro y oscuro
 js/app.js                  Lógica: pasos, croquis, firma y generación del PDF
-vendor/jspdf.umd.min.js    jsPDF 2.5.1 (librería del PDF, servida localmente)
+js/framebuster.js          Protección contra que otro sitio embeba la página
+fonts/                     Tipografías Archivo y Public Sans (woff2, locales)
+_headers                   Cabeceras de seguridad para Netlify / Cloudflare Pages
+vendor/jspdf.umd.min.js    jsPDF 4.2.1 (librería del PDF, servida localmente)
 vendor/jspdf-LICENSE.txt   Licencia MIT de jsPDF
 assets/logo.jpg            Logo del encabezado y del PDF
 ```
@@ -48,15 +51,15 @@ El archivo `ejemplo-siniestro.pdf` es solo de muestra; no hace falta subirlo.
 ## Capa de seguridad incluida
 
 - **Nada se guarda.** No se usa localStorage, cookies ni servidor. Al cerrar o recargar la página los datos desaparecen. Si hay datos cargados, el navegador avisa antes de salir. El botón "Borrar todos los datos cargados" limpia todo al terminar.
-- **Content-Security-Policy** (meta en `index.html`): solo se ejecutan scripts del propio sitio. Se bloquean scripts externos o inyectados, formularios que envíen datos afuera, `<object>`/`<embed>` y conexiones a otros dominios. La única excepción son las tipografías de Google Fonts.
+- **Content-Security-Policy** (meta en `index.html`): solo se ejecutan scripts del propio sitio. Se bloquean scripts externos o inyectados, formularios que envíen datos afuera, `<object>`/`<embed>` y conexiones a otros dominios. No hay excepciones: las tipografías también se sirven desde el propio sitio (`fonts/`), así que ningún dato del visitante llega a Google. Tampoco se permiten estilos en línea.
 - **Sin dependencias de terceros en tiempo de ejecución:** jsPDF está copiado en `vendor/` y no se carga desde un CDN.
-- **Validación de entradas:** límite de largo en todos los campos y caracteres de control eliminados antes de armar el PDF o el email. Solo se aceptan imágenes, de hasta 20 MB y 6 fotos por tipo, y se re-codifican a JPEG, lo que descarta metadatos como la ubicación GPS de la foto. El email de destino se valida.
+- **Validación de entradas:** límite de largo en todos los campos y caracteres de control eliminados antes de armar el PDF o el email. Solo se aceptan imágenes, de hasta 20 MB y 6 fotos por tipo, y se re-codifican a JPEG, lo que descarta metadatos como la ubicación GPS de la foto. Se rechazan imágenes de más de 100 megapíxeles. El email de destino se valida.
 - **El texto del usuario nunca se inserta como HTML** (se usa `textContent`), así que no hay inyección de código en la página.
 - `referrer: no-referrer` y `robots: noindex` para que el formulario no aparezca en buscadores.
 
 ### Qué no cubre (y cómo sumarlo si hace falta)
 
-- GitHub Pages no permite configurar cabeceras HTTP. Por eso la protección contra que otro sitio muestre la página dentro de un iframe (`frame-ancestors` / `X-Frame-Options`) no se puede aplicar. Si eso importa, se puede publicar detrás de **Cloudflare** (gratis) y agregar esas cabeceras ahí.
+- GitHub Pages no permite configurar cabeceras HTTP, así que `X-Frame-Options` / `frame-ancestors` no se pueden enviar. Como mitigación, `js/framebuster.js` oculta la página y trata de salir si la cargan dentro de un iframe de otro sitio. Si se publica en **Netlify** o **Cloudflare Pages** (gratis), el archivo `_headers` ya incluye las cabeceras correctas y se aplican solas.
 - Una contraseña puesta en la propia página no protegería de verdad: en un sitio estático cualquiera puede leer el código y verla. Si el formulario tiene que ser solo para personal interno, lo correcto es **Cloudflare Access** delante del sitio o un repositorio privado con Pages restringido (requiere plan pago de GitHub).
 - El envío automático por email con el PDF adjunto requiere un servicio externo (por ejemplo un formulario de Formspree o una función serverless). Hoy el PDF se comparte desde el celular o se adjunta a mano.
 

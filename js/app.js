@@ -85,7 +85,7 @@ function renderLes(){
         <input type="radio" name="les${i}_pol" id="les${i}_psi" value="Si" data-lr="policia"><label for="les${i}_psi">Sí</label>
         <input type="radio" name="les${i}_pol" id="les${i}_pno" value="No" data-lr="policia"><label for="les${i}_pno">No</label></div></div>
       <label class="f">Nº de sumario<input type="text" data-l="sumario"></label>
-      <label class="f full">Detalle de lesiones<textarea data-l="detalle" style="min-height:96px"></textarea></label>
+      <label class="f full">Detalle de lesiones<textarea class="u11" data-l="detalle"></textarea></label>
     </div>`;
     d.querySelectorAll("[data-l]").forEach(el=>{el.value=p[el.dataset.l]||"";el.addEventListener("input",()=>{p[el.dataset.l]=el.value;saveSoon();});});
     d.querySelectorAll("[data-lr]").forEach(el=>{el.checked=p[el.dataset.lr]===el.value;el.addEventListener("change",()=>{p[el.dataset.lr]=el.value;saveSoon();});});
@@ -99,11 +99,25 @@ $("#lesAdd").onclick=()=>{if(state.lesionados.length>=10)return alertMsg("Máxim
 
 /* ---------- imágenes ---------- */
 const MAX_MB=20;
-function fileToJpeg(file,max=1600,q=.82){
+const MAX_MPX=100; // megapíxeles máximos: evita que una imagen "bomba" (pocos MB, miles de píxeles de lado) cuelgue la pestaña
+/* lee el ancho y alto desde la cabecera de PNG/JPEG sin decodificar la imagen; null si no puede */
+async function headerDims(file){
+  try{const b=new DataView(await file.slice(0,262144).arrayBuffer());
+    if(b.byteLength>24&&b.getUint32(0)===0x89504E47)return[b.getUint32(16),b.getUint32(20)];
+    if(b.getUint16(0)===0xFFD8){let o=2;while(o+9<b.byteLength){if(b.getUint8(o)!==0xFF){o++;continue;}const m=b.getUint8(o+1);
+      if(m>=0xC0&&m<=0xCF&&m!==0xC4&&m!==0xC8&&m!==0xCC)return[b.getUint16(o+7),b.getUint16(o+5)];
+      if(m===0xD8||m===0x01||(m>=0xD0&&m<=0xD7)){o+=2;continue;}o+=2+b.getUint16(o+2);}}
+  }catch(e){}
+  return null;
+}
+async function fileToJpeg(file,max=1600,q=.82){
+  if(!file||!/^image\//.test(file.type))throw new Error("El archivo no es una imagen.");
+  if(file.size>MAX_MB*1024*1024)throw new Error("La imagen supera los "+MAX_MB+" MB.");
+  const d=await headerDims(file);if(d&&d[0]*d[1]>MAX_MPX*1e6)throw new Error("La imagen tiene demasiados píxeles.");
   return new Promise((res,rej)=>{
-    if(!file||!/^image\//.test(file.type))return rej(new Error("El archivo no es una imagen."));
-    if(file.size>MAX_MB*1024*1024)return rej(new Error("La imagen supera los "+MAX_MB+" MB."));const url=URL.createObjectURL(file);const im=new Image();
-    im.onload=()=>{let w=im.naturalWidth,h=im.naturalHeight;const k=Math.min(1,max/Math.max(w,h));w=Math.round(w*k);h=Math.round(h*k);
+    const url=URL.createObjectURL(file);const im=new Image();
+    im.onload=()=>{if(im.naturalWidth*im.naturalHeight>MAX_MPX*1e6){URL.revokeObjectURL(url);return rej(new Error("La imagen tiene demasiados píxeles."));}
+      let w=im.naturalWidth,h=im.naturalHeight;const k=Math.min(1,max/Math.max(w,h));w=Math.round(w*k);h=Math.round(h*k);
       const c=document.createElement("canvas");c.width=w;c.height=h;const x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,w,h);x.drawImage(im,0,0,w,h);
       URL.revokeObjectURL(url);res({src:c.toDataURL("image/jpeg",q),w,h});};
     im.onerror=()=>{URL.revokeObjectURL(url);rej(new Error("No se pudo leer la imagen"));};im.src=url;});
@@ -277,7 +291,7 @@ $("#sk_addtext").onclick=()=>{const v=clean($("#sk_text").value).slice(0,60);if(
 
 function renderSelbar(){
   const bar=$("#selbar");bar.innerHTML="";
-  if(!sel){bar.innerHTML='<span class="lbl" style="font-weight:500">Tocá un elemento del croquis para moverlo, girarlo o borrarlo.</span>';return;}
+  if(!sel){bar.innerHTML='<span class="lbl u12">Tocá un elemento del croquis para moverlo, girarlo o borrarlo.</span>';return;}
   const T=TYPES[sel.type];const name=document.createElement("span");name.className="lbl";name.textContent=(sel.label?sel.label+" · ":"")+(sel.type==="texto"?"“"+sel.text+"”":T.name);bar.appendChild(name);
   const mk=(txt,fn,cls,aria)=>{const b=document.createElement("button");b.type="button";b.className="btn small "+(cls||"");b.textContent=txt;if(aria)b.setAttribute("aria-label",aria);b.onclick=()=>{fn();drawSketch();saveSoon();};bar.appendChild(b);};
   mk("⟲",()=>sel.rot=((sel.rot||0)+315)%360,"","Girar a la izquierda");
@@ -503,7 +517,7 @@ function renderReview(){readFields();
   if(!state.att.carnet.length)miss.push("Foto del carnet de conducir");
   if(!state.att.tarjeta.length)miss.push("Foto de la tarjeta verde");
   const r=$("#review");
-  r.innerHTML=miss.length?'<p style="margin:0 0 6px;font-weight:600">Te falta completar:</p><ul class="miss"></ul><p class="hint" style="margin-top:8px">Igual podés generar el PDF; los campos vacíos quedan en blanco para completar a mano.</p>':'<p class="ok" style="margin:0">Está todo completo. Ya podés descargar o enviar el PDF.</p>';
+  r.innerHTML=miss.length?'<p class="u13">Te falta completar:</p><ul class="miss"></ul><p class="hint u14">Igual podés generar el PDF; los campos vacíos quedan en blanco para completar a mano.</p>':'<p class="ok u15">Está todo completo. Ya podés descargar o enviar el PDF.</p>';
   const ul=r.querySelector("ul");if(ul)miss.forEach(m=>{const li=document.createElement("li");li.textContent=m;ul.appendChild(li);});
 }
 
